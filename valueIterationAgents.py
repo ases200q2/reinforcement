@@ -62,7 +62,48 @@ class ValueIterationAgent(ValueEstimationAgent):
     def runValueIteration(self):
         # Write value iteration code here
         "*** YOUR CODE HERE ***"
+        #print "tesr"
+        #print self.mdp.getStates()
+        #print self.mdp.getPossibleActions( (0, 0))
+        #aa=self.mdp.getTransitionStatesAndProbs( (0, 0),'north')
+        #self.values['(0, 0)']=1
+        #print self.values
+        
+        
+        for i in range(self.iterations):
+            values_k=self.values
+            
+            states=self.mdp.getStates()
+            
+            for state in states:
+                
+                Qmax=0.0
+                
+                if not self.mdp.isTerminal(state):
+                    actions=self.mdp.getPossibleActions(state)
+                       
+                    
+                    
+                    for action in actions:
+                        nextStates=self.mdp.getTransitionStatesAndProbs(state,action)
+                        
+                        Q=0.0
+                        
+                        for nextState in nextStates :
+                            R=self.mdp.getReward(state, action, nextState[0])
 
+                            Q+=nextState[1]*(R+self.discount*values_k[nextState[0]])
+                            
+                            
+                        if (Q > Qmax): Qmax=Q
+                            
+                              
+                self.values[state]=Qmax
+                
+        print self.values       
+  
+        
+        
 
     def getValue(self, state):
         """
